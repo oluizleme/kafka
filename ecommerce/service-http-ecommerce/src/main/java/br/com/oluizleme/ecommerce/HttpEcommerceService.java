@@ -1,4 +1,4 @@
-package br.com.oluizleme.ecommrce;
+package br.com.oluizleme.ecommerce;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
