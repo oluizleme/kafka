@@ -13,6 +13,8 @@
         <module>service-new-order</module>
         <module>service-log</module>
         <module>service-fraud-detector</module>
+        <module>service-email</module>
+        <module>service-user</module>
     </modules>
 
     <properties>
