@@ -9,15 +9,15 @@ import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
-public class GenerateOrderServlet extends HttpServlet {
+public class GenerateAllReportsServlet extends HttpServlet {
 
-    private final KafkaDispatcher<User> userDispatcher = new KafkaDispatcher();
+    private final KafkaDispatcher<String> batchDispatcher = new KafkaDispatcher();
 
     @Override
     public void destroy() {
         super.destroy();
         try {
-            userDispatcher.close();
+            batchDispatcher.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -26,9 +26,9 @@ public class GenerateOrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            for (User user: users) {
-                userDispatcher.send("USER_GENERATE_READING_REPORT", user.getUuid(), user);
-            }
+
+            batchDispatcher.send("SEND_MESSAGE_TO_ALL_USERS","USER_GENERATE_READING_REPORT", "USER_GENERATE_READING_REPORT");
+
             System.out.println("Sent generate report to all users.");
             resp.setStatus(HttpServletResponse.SC_OK);
             resp.getWriter().println("Report requests generated.");
