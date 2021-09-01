@@ -1,7 +1,5 @@
 package br.com.oluizleme.ecommerce;
 
-import br.com.oluizleme.ecommerce.KafkaDispatcher;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.UUID;
