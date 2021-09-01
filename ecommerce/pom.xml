@@ -12,6 +12,7 @@
         <module>commons-kafka</module>
         <module>service-new-order</module>
         <module>service-log</module>
+        <module>service-fraud-detector</module>
     </modules>
 
     <properties>
