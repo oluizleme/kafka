@@ -2,6 +2,7 @@ package br.com.oluizleme.ecommerce;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,12 +28,11 @@ public class BatchSendMessageService {
         }
     }
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) throws SQLException, ExecutionException, InterruptedException, IOException {
         var batchService = new BatchSendMessageService();
         try(var service = new KafkaService(BatchSendMessageService.class.getSimpleName(),
                 "ECOMMERCE_SEND_MESSAGE_TO_ALL_USERS",
                 batchService::parse,
-                String.class,
                 Map.of())) {
             service.run();
         }
@@ -42,12 +42,14 @@ public class BatchSendMessageService {
 
     private void parse(ConsumerRecord<String, Message<String>> record) throws SQLException, ExecutionException, InterruptedException {
         System.out.println("--------------------------------------------------------");
-        System.out.println("Processning new batch");
+        System.out.println("Processing new batch");
         var message = record.value();
         System.out.println("Topic: " + message.getPayload());
 
+        if(true) throw new RuntimeException("deu erro que eu forcei");
+
         for (User user: getAllUsers()) {
-            userDispatcher.send(message.getPayload(), user.getUuid(),
+            userDispatcher.sendAsync(message.getPayload(), user.getUuid(),
                     message.getId().continueWith(BatchSendMessageService.class.getSimpleName()),user);
         }
     }

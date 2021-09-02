@@ -2,16 +2,17 @@ package br.com.oluizleme.ecommerce;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
+import java.io.IOException;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class EmailService {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
         var emailService = new EmailService();
         try (var service = new KafkaService<String>(EmailService.class.getSimpleName(),
                 "ECOMMERCE_SEND_EMAIL",
                 emailService::parse,
-                String.class,
                 Map.of())) {
             service.run();
         }

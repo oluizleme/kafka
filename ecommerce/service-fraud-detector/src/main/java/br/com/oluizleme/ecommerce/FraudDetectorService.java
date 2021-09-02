@@ -2,18 +2,18 @@ package br.com.oluizleme.ecommerce;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class FraudDetectorService {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException, IOException {
         var fraudDetectorService = new FraudDetectorService();
         try(var service = new KafkaService(FraudDetectorService.class.getSimpleName(),
                 "ECOMMERCE_NEW_ORDER",
                 fraudDetectorService::parse,
-                Order.class,
                 Map.of())){
             service.run();
         }
