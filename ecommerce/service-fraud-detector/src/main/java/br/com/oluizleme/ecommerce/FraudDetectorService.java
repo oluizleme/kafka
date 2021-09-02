@@ -21,13 +21,15 @@ public class FraudDetectorService {
 
     private final KafkaDispatcher<Order> orderDispatcher = new KafkaDispatcher<Order>();
 
-    private void parse(ConsumerRecord<String,Order> record) throws ExecutionException, InterruptedException {
+    private void parse(ConsumerRecord<String, Message<Order>> record) throws ExecutionException, InterruptedException {
         System.out.println("--------------------------------------------------------");
         System.out.println("Processing new order, checking for fraud.");
-        System.out.println("KEY " + record.key());
-        System.out.println("VALUE " + record.value());
-        System.out.println("PARTITION " + record.partition());
-        System.out.println("OFFSET " + record.offset());
+        System.out.println("Key " + record.key());
+        System.out.println("Value " + record.value());
+        System.out.println("Partition " + record.partition());
+        System.out.println("Offset " + record.offset());
+
+        var message = record.value();
 
         try{
             Thread.sleep(5000);
@@ -35,15 +37,18 @@ public class FraudDetectorService {
             e.printStackTrace();
         }
 
-        var order = record.value();
+        var order = message.getPayload();
 
         if(isFraud(order)) {
             //pretending thar the fraud happens when the amount is > = 4500
             System.out.println("Order is a fraud!!! " + order.toString());
-            orderDispatcher.send("ECOMMERCE_ORDER_REJECTED", order.getEmail(), order);
+            orderDispatcher.send("ECOMMERCE_ORDER_REJECTED", order.getEmail(),
+                    message.getId().continueWith(FraudDetectorService.class.getSimpleName()),
+                    order);
         } else {
             System.out.println("Order approved: " + order.toString());
-            orderDispatcher.send("ECOMMERCE_ORDER_APPROVED", order.getEmail(), order);
+            orderDispatcher.send("ECOMMERCE_ORDER_APPROVED", order.getEmail(),
+                    new CorrelationId(FraudDetectorService.class.getSimpleName()),order);
         }
         System.out.println("Order processed");
     }
