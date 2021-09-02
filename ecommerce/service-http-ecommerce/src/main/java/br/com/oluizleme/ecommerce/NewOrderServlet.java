@@ -1,5 +1,7 @@
 package br.com.oluizleme.ecommerce;
 
+import br.com.oluizleme.ecommerce.dispatcher.KafkaDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +14,12 @@ import java.util.concurrent.ExecutionException;
 public class NewOrderServlet extends HttpServlet {
 
     private final KafkaDispatcher<Order> orderDispatcher = new KafkaDispatcher();
-    private final KafkaDispatcher<String> emailDispatcher = new KafkaDispatcher<>();
 
     @Override
     public void destroy() {
         super.destroy();
         try {
             orderDispatcher.close();
-            emailDispatcher.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,9 +37,6 @@ public class NewOrderServlet extends HttpServlet {
             var orderId = UUID.randomUUID().toString();
             var order = new Order(orderId, amount, email);
             orderDispatcher.send("ECOMMERCE_NEW_ORDER", email, new CorrelationId(NewOrderServlet.class.getSimpleName()), order);
-
-            var emailCode = "Thank you for your order";
-            emailDispatcher.send("ECOMMERCE_SEND_EMAIL", email,new CorrelationId(NewOrderServlet.class.getSimpleName()), emailCode);
 
             System.out.println("New order sent successfully.");
 

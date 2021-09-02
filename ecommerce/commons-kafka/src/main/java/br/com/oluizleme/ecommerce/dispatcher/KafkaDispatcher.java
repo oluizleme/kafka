@@ -1,5 +1,7 @@
-package br.com.oluizleme.ecommerce;
+package br.com.oluizleme.ecommerce.dispatcher;
 
+import br.com.oluizleme.ecommerce.CorrelationId;
+import br.com.oluizleme.ecommerce.Message;
 import org.apache.kafka.clients.producer.*;
 import org.apache.kafka.common.serialization.StringSerializer;
 
@@ -23,8 +25,8 @@ public class KafkaDispatcher<T> implements Closeable {
         future.get();
     }
 
-    Future<RecordMetadata> sendAsync(String topic, String key, CorrelationId id, T payload) {
-        var value = new Message<>(id, payload);
+    public Future<RecordMetadata> sendAsync(String topic, String key, CorrelationId id, T payload) {
+        var value = new Message<>(id.continueWith("_" + topic), payload);
         var record = new ProducerRecord<>(topic, key, value);
         Callback callback = (data, ex) -> {
             if (ex != null) {

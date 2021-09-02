@@ -1,5 +1,7 @@
 package br.com.oluizleme.ecommerce;
 
+import br.com.oluizleme.ecommerce.consumer.KafkaService;
+import br.com.oluizleme.ecommerce.dispatcher.KafkaDispatcher;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.io.IOException;

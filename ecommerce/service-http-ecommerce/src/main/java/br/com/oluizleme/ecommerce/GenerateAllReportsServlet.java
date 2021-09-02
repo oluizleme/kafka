@@ -1,5 +1,7 @@
 package br.com.oluizleme.ecommerce;
 
+import br.com.oluizleme.ecommerce.dispatcher.KafkaDispatcher;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

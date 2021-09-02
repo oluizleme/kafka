@@ -1,5 +1,6 @@
-package br.com.oluizleme.ecommerce;
+package br.com.oluizleme.ecommerce.consumer;
 
+import br.com.oluizleme.ecommerce.Message;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public interface ConsumerFunction <T> {
