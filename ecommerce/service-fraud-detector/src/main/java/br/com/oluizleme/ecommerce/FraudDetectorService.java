@@ -52,13 +52,11 @@ public class FraudDetectorService implements ConsumerService<Order> {
             return;
         }
 
-
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
 
         if (isFraud(order)) {
             database.update("insert into Orders(uuid,is_fraud) values(?,true)", order.getOrderId());
