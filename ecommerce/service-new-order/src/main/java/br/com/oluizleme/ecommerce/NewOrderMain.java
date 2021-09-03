@@ -9,7 +9,7 @@ import java.util.concurrent.ExecutionException;
 
 public class NewOrderMain {
 
-    public static void main(String[] args) throws InterruptedException, ExecutionException, IOException {
+    public static void main(String[] args) throws IOException, ExecutionException, InterruptedException {
 
         try (var orderDispatcher = new KafkaDispatcher<Order>()) {
             var email = String.valueOf(Math.random() + "@email.com");

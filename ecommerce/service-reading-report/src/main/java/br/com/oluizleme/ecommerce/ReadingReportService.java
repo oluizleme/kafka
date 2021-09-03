@@ -1,14 +1,12 @@
 package br.com.oluizleme.ecommerce;
 
 import br.com.oluizleme.ecommerce.consumer.ConsumerService;
-import br.com.oluizleme.ecommerce.consumer.KafkaService;
 import br.com.oluizleme.ecommerce.consumer.ServiceRunner;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 public class ReadingReportService implements ConsumerService<User> {

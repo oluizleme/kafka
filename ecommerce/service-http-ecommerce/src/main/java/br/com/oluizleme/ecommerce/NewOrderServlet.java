@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class NewOrderServlet extends HttpServlet {

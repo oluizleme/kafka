@@ -24,10 +24,10 @@ public class LogService {
 
     private void parse(ConsumerRecord<String, Message<String>> record) {
         System.out.println("--------------------------------------------------------");
-        System.out.println("LOG TOPIC " + record.topic());
-        System.out.println("KEY " + record.key());
-        System.out.println("VALUE " + record.value());
-        System.out.println("PARTITION " + record.partition());
-        System.out.println("OFFSET " + record.offset());
+        System.out.println("LOG Topic " + record.topic());
+        System.out.println("Key " + record.key());
+        System.out.println("Value " + record.value());
+        System.out.println("Partition " + record.partition());
+        System.out.println("Offset " + record.offset());
     }
 }
